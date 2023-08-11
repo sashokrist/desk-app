@@ -24,7 +24,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/desks/', [DeskController::class, 'index']);
-   // Route::put('/desks/', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
+   // Route::get('/desks/edit', [DeskController::class, 'edit'])->name('desks.edit');
+    Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
+
+    // Route::put('/desks/', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
+    Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
     Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
     Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
     Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
