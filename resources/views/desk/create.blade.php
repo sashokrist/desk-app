@@ -20,7 +20,7 @@
         }
         .desk {
             position: absolute;
-            width: 150px; /* Set the desired width of each desk */
+            width: 250px; /* Set the desired width of each desk */
             height: 150px; /* Set the desired height of each desk */
             background-color: #ffcc00; /* Set the background color */
             border: 1px solid #333;
