@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>Add desk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -8,24 +9,15 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <!-- Link to the app.css file -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <style>
-        #draggable {
-            width: 50px;
-            height: 50px;
-            padding: 0.5em;
-        }
-
+        #draggable {width: 50px;height: 50px;}
+        #resizable { width: 50px; height: 50px;  }
         .container {
-            /*position: relative;*/
-            width: 300%;
-            height: 300px; /* Set the desired height of the map */
-            border: 1px solid #ccc;
-            /*margin-top: 20px;*/
+            position: relative;
+            width: 800px;
+            height: 800px;
         }
-
         .desk {
             position: absolute;
             width: 150px; /* Set the desired width of each desk */
@@ -38,69 +30,65 @@
             align-items: center;
             font-size: 12px;
         }
-
         .symbol {
             font-weight: bold;
         }
-
         .name {
             margin-top: 5px;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
         $(function () {
             $("#draggable").draggable();
         });
+        $( function() {
+            $( "#resizable" ).resizable();
+        } );
     </script>
 </head>
 <body>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
                 <div class="card-body">
-                    <div class="card bg-light mt-3">
-                        <div class="card-header">
-                            <!-- Search Form -->
-                            <form class="mt-3">
-                                <div class="mb-3">
-                                    <label for="searchKeyword" class="form-label">Search by Name or Symbol:</label>
-                                    <input type="text" id="searchKeyword" name="searchKeyword" class="form-control"
-                                           placeholder="Enter name or symbol">
-                                </div>
-                                <button type="button" class="btn btn-primary" id="searchButton">Search</button>
-                                <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
-                                        data-bs-target="#postModal">Create Desk
-                                </button>
-                            </form>
-                        </div>
+                    <div>
+                        <form>
+                            <div class="mb-3">
+                                <label for="searchKeyword" class="form-label">Search by Name or Symbol:</label>
+                                <input type="text" id="searchKeyword" name="searchKeyword" class="form-control"
+                                       placeholder="Enter name or symbol">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+                            <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+                                    data-bs-target="#postModal">Create Desk
+                            </button>
+                        </form>
                     </div>
-                </div>
-                <div class="card-body">
                     <div id="map">
                         @foreach($desks as $desk)
-                            <div id="draggable" class="ui-widget-content">
-                                <div class="desk"
-                                     style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
-                                    <div class="symbol">{{ $desk->symbol }}</div>
-                                    <div class="name">{{ $desk->name }}</div>
-                                    <div class="modal-header">
-                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
-                                           class="btn btn-success">Edit Desk</a>
-                                        <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete Desk</button>
-                                        </form>
+                            <div id="draggable">
+                                <div id="resizable">
+                                    <div class="desk"
+                                         style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                                        <div class="symbol">{{ $desk->symbol }}</div>
+                                        <div class="name">{{ $desk->name }}</div>
+                                        <div class="modal-header">
+                                            <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
+                                               class="btn btn-success">Edit Desk</a>
+                                            <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete Desk</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
                 <!-- Modal -->
                 <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                      aria-hidden="true">
@@ -136,7 +124,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 </body>
 <script type="text/javascript">
