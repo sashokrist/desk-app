@@ -44,15 +44,15 @@ class DeskController extends Controller
         return response()->json(['success' => 'Post created successfully.']);
     }
 
-    public function updatePosition(Request $request)
-    {
-        $desk = Desk::findOrFail($request->id);
-        $desk->position_x = $request->position_x;
-        $desk->position_y = $request->position_y;
-        $desk->save();
-
-        return response()->json(['message' => 'Desk position updated successfully.']);
-    }
+//    public function updatePosition(Request $request, $id)
+//    {
+//        $desk = Desk::findOrFail($id);
+//        $desk->position_x = $request->position_x;
+//        $desk->position_y = $request->position_y;
+//        $desk->save();
+//
+//        return response()->json(['message' => 'Desk position updated successfully.']);
+//    }
 
     public function search(Request $request)
     {

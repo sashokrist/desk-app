@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <style>
-        #draggable { width: 150px; height: 150px; padding: 0.5em; }
+        #draggable { width: 50px; height: 50px; padding: 0.5em; }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -23,15 +23,15 @@
 .container {
         position: relative;
         width: 100%;
-        height: 500px; /* Set the desired height of the map */
+        height: 200px; /* Set the desired height of the map */
         border: 1px solid #ccc;
         margin-top: 20px;
     }
 
     .desk {
         position: absolute;
-        width: 50px; /* Set the desired width of each desk */
-        height: 50px; /* Set the desired height of each desk */
+        width: 150px; /* Set the desired width of each desk */
+        height: 150px; /* Set the desired height of each desk */
         background-color: #ffcc00; /* Set the background color */
         border: 1px solid #333;
         display: flex;
@@ -69,45 +69,16 @@
                 <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#postModal">
                   Create Desk </button>
                 <div id="map">
-                    <div id="draggable" class="ui-widget-content">
                         @foreach($desks as $desk)
+                        <div id="draggable" class="ui-widget-content">
                             <div class="desk" style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
                                 <div class="symbol">{{ $desk->symbol }}</div>
                                 <div class="name">{{ $desk->name }}</div>
                             </div>
+                        </div>
                         @endforeach
                     </div>
                 </div>
-                    <!-- Existing desks display code -->
-                </div>
-
-{{--                <table class="table table-bordered mt-3">--}}
-{{--                    <tr>--}}
-{{--                        <th colspan="3">--}}
-{{--                            List Of Desks--}}
-{{--
-{{--                        </th>--}}
-{{--                    </tr>--}}
-{{--                    <tr>--}}
-{{--                        <th>ID</th>--}}
-{{--                        <th>Name</th>--}}
-{{--                        <th>--}}
-{{--                            Symbol--}}
-{{--                        </th>--}}
-{{--                    </tr>--}}
-{{--                    @foreach($desks as $desk)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{ $desk->id }}</td>--}}
-{{--                            <td>{{ $desk->name }}</td>--}}
-{{--                            <td>{{ $desk->symbol }}</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                </table>--}}
-
-            </div>
-        </div>
-    </div>
-
     <!-- Modal -->
     <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -185,14 +156,14 @@
             });
         }
 
-        function updateMap(desk) {
-            var deskHtml = '<div class="desk" style="position: absolute; left: ' + desk.position_x + 'px; top: ' + desk.position_y + 'px;">' +
-                '<div class="symbol">' + desk.symbol + '</div>' +
-                '<div class="name">' + desk.name + '</div>' +
-                '</div>';
-
-            $("#map").append(deskHtml);
-        }
+        // function updateMap(desk) {
+        //     var deskHtml = '<div class="desk" style="position: absolute; left: ' + desk.position_x + 'px; top: ' + desk.position_y + 'px;">' +
+        //         '<div class="symbol">' + desk.symbol + '</div>' +
+        //         '<div class="name">' + desk.name + '</div>' +
+        //         '</div>';
+        //
+        //     $("#map").append(deskHtml);
+        // }
 
         $("#searchButton").click(function(e) {
             e.preventDefault();
@@ -267,24 +238,24 @@
             });
         });
 
-        function updateDeskPosition(deskId, positionX, positionY) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('desks.updatePosition') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: deskId,
-                    position_x: positionX,
-                    position_y: positionY
-                },
-                success: function(response) {
-                    // Handle success response if needed
-                },
-                error: function(error) {
-                    // Handle error response if needed
-                }
-            });
-        }
+        {{--function updateDeskPosition(deskId, positionX, positionY) {--}}
+        {{--    $.ajax({--}}
+        {{--        type: "POST",--}}
+        {{--        url: "{{ route('desks.updatePosition') }}",--}}
+        {{--        data: {--}}
+        {{--            _token: "{{ csrf_token() }}",--}}
+        {{--            id: deskId,--}}
+        {{--            position_x: positionX,--}}
+        {{--            position_y: positionY--}}
+        {{--        },--}}
+        {{--        success: function(response) {--}}
+        {{--            // Handle success response if needed--}}
+        {{--        },--}}
+        {{--        error: function(error) {--}}
+        {{--            // Handle error response if needed--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--}--}}
 
 
     </script>

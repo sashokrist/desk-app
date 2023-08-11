@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('symbol');
-            $table->integer('position_x');
-            $table->integer('position_y');
+            $table->integer('position_x')->default(100);
+            $table->integer('position_y')->default(220);
             $table->timestamps();
         });
     }
