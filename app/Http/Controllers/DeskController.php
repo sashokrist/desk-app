@@ -18,14 +18,8 @@ class DeskController extends Controller
         return view('desk.create', compact('desks', 'categories'));
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return \Illuminate\Http\JsonResponse()
-     */
     public function store(Request $request)
     {
-      //  dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'symbol' => 'required',
@@ -45,13 +39,8 @@ class DeskController extends Controller
         ]);
 
         $desk->category()->associate($request->category_id);
-//        $input = $request->category_id;
-//        $desk->fill($input)->save();
         $desk->save();
-//
-
-
-        return response()->json(['success' => 'Post created successfully.']);
+        return response()->json(['success' => 'Desk created successfully.']);
     }
 
     public function edit(Desk $desk)
@@ -78,10 +67,9 @@ class DeskController extends Controller
         }
 
         $desk->save();
-
         $desks = Desk::get();
         $categories = Category::all();
-        return view('desk.create', compact('desks', 'categories'));
+        return response()->json(['success' => 'Desk updated successfully.']);
     }
 
     public function destroy($id)
