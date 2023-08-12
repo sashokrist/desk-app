@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Desk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class DeskController extends Controller
 {
     public function index()
     {
+        $categories = Category::all();
         $desks = Desk::get();
 
-        return view('desk.create', compact('desks'));
+        return view('desk.create', compact('desks', 'categories'));
     }
 
     /**
@@ -22,6 +25,7 @@ class DeskController extends Controller
      */
     public function store(Request $request)
     {
+      //  dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'symbol' => 'required',
@@ -33,26 +37,46 @@ class DeskController extends Controller
             ]);
         }
 
-        Desk::create([
+        $desk = new Desk([
             'name' => $request->name,
             'symbol' => $request->symbol,
             'position_x' => $request->position_x,
             'position_y' => $request->position_y,
         ]);
 
+        $desk->category()->associate($request->category_id);
+//        $input = $request->category_id;
+//        $desk->fill($input)->save();
+        $desk->save();
+//
+
+
         return response()->json(['success' => 'Post created successfully.']);
     }
 
     public function edit(Desk $desk)
     {
-        return view('desk.edit', compact('desk'));
+        if (Gate::denies('viewAny', Desk::class)) {
+            abort(403, 'Unauthorized');
+        }
+        $categories = Category::all();
+        return view('desk.edit', compact('desk', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
+        if (Gate::denies('viewAny', Desk::class)) {
+            abort(403, 'Unauthorized');
+        }
         $desk = Desk::findOrFail($id);
         $desk->name = $request->name;
         $desk->symbol = $request->symbol;
+
+        // Update the category relation if a new category is selected
+        if ($request->has('category_id')) {
+            $desk->category()->associate($request->category_id);
+        }
+
         $desk->save();
 
         $desks = Desk::get();
@@ -61,6 +85,9 @@ class DeskController extends Controller
 
     public function destroy($id)
     {
+        if (Gate::denies('viewAny', Desk::class)) {
+            abort(403, 'Unauthorized');
+        }
         $desk = Desk::findOrFail($id);
         $desk->delete();
 

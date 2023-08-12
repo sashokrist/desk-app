@@ -14,7 +14,18 @@
                             <div class="alert alert-danger print-error-msg" style="display:none">
                                 <ul></ul>
                             </div>
-
+                            <div class="mb-3">
+                                <div class="mb-6 ">
+                                    <label class="form-label">Select Category</label>
+                                    <select name="category_id" class="form-control">
+                                        @foreach ($categories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <label for="symbol" class="form-label">Symbol:</label>
+                                <input type="text" id="symbol" class="form-control">
+                            </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">edit Name:</label>
                                 <input type="text" id="name" name="name" class="form-control" value="{{ $desk->name }}" placeholder="Name" required="">

@@ -36,6 +36,29 @@
         .name {
             margin-top: 5px;
         }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
     </style>
     <script>
         $(function () {
@@ -47,6 +70,40 @@
     </script>
 </head>
 <body>
+<ul>
+    <li><a class="active" href="{{ route('desks.index') }}">Home</a></li>
+    @guest
+        @if (Route::has('login'))
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+            </li>
+        @endif
+
+        @if (Route::has('register'))
+            <li>
+                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+            </li>
+        @endif
+    @else
+        <li class="nav-item dropdown">
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                {{ Auth::user()->name }}
+            </a>
+
+            <div>
+                <a class="dropdown-item" href="{{ route('logout') }}" style="color: blue"
+                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </li>
+    @endguest
+</ul>
 <div class="container">
         <div class="col-md-12">
             <div class="card">
@@ -71,6 +128,7 @@
                                 <div id="resizable">
                                     <div class="desk"
                                          style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                                        <div class="symbol">{{ $desk->category->name }}</div>
                                         <div class="symbol">{{ $desk->symbol }}</div>
                                         <div class="name">{{ $desk->name }}</div>
                                         <div class="modal-header">
@@ -106,6 +164,16 @@
                                         <ul></ul>
                                     </div>
                                     <div class="mb-3">
+                                        <div class="mb-6 ">
+                                            <label class="form-label">Select Category</label>
+                                            <select id="category_id" name="category_id" class="form-control">
+                                                @foreach ($categories as $category)
+                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="name" class="form-label">Name:</label>
                                         <input type="text" id="name" name="name" class="form-control" placeholder="Name"
                                                required="">
@@ -138,12 +206,13 @@
 
         var name = $("#name").val();
         var symbol = $("#symbol").val();
+        var category_id = $("#category_id").val();
         console.log(symbol);
 
         $.ajax({
             type: 'POST',
             url: "{{ route('desks.store') }}",
-            data: {name: name, symbol: symbol},
+            data: {name: name, symbol: symbol, category_id: category_id},
             success: function (data) {
                 if ($.isEmptyObject(data.error)) {
                     location.reload();
