@@ -80,7 +80,8 @@ class DeskController extends Controller
         $desk->save();
 
         $desks = Desk::get();
-        return view('desk.create', compact('desks'));
+        $categories = Category::all();
+        return view('desk.create', compact('desks', 'categories'));
     }
 
     public function destroy($id)
@@ -114,5 +115,4 @@ class DeskController extends Controller
 
             return response()->json(['success' => 'Desk position updated successfully.']);
     }
-
 }
