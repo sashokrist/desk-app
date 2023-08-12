@@ -126,8 +126,9 @@
                         @foreach($desks as $desk)
                             <div id="draggable">
                                 <div id="resizable">
-                                    <div class="desk"
+                                    <div class="desk" data-desk-id="{{ $desk->id }}"
                                          style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                                        <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
                                         <div class="symbol">{{ $desk->category->name }}</div>
                                         <div class="symbol">{{ $desk->symbol }}</div>
                                         <div class="name">{{ $desk->name }}</div>
@@ -269,6 +270,7 @@
     }
 
     function updateDeskPosition(deskId, positionX, positionY) {
+        console.log(deskId, positionX, positionY);
         $.ajax({
             type: "POST",
             url: "{{ route('desks.updatePosition') }}",
@@ -293,26 +295,26 @@
         var initialX = e.clientX;
         var initialY = e.clientY;
 
-        $(document).mousemove(function (e) {
-            var offsetX = e.clientX - initialX;
-            var offsetY = e.clientY - initialY;
+                $(document).mousemove(function(e) {
+                    var offsetX = e.clientX - initialX;
+                    var offsetY = e.clientY - initialY;
 
-            var currentX = parseInt(desk.css("left")) || 0;
-            var currentY = parseInt(desk.css("top")) || 0;
+                    var currentX = parseInt(desk.css("left")) || 0;
+                    var currentY = parseInt(desk.css("top")) || 0;
 
-            desk.css("left", currentX + offsetX + "px");
-            desk.css("top", currentY + offsetY + "px");
+                    desk.css("left", currentX + offsetX + "px");
+                    desk.css("top", currentY + offsetY + "px");
 
-            initialX = e.clientX;
-            initialY = e.clientY;
-        });
+                    initialX = e.clientX;
+                    initialY = e.clientY;
+                });
 
-        $(document).mouseup(function (e) {
-            $(document).off("mousemove");
-            $(document).off("mouseup");
+                $(document).mouseup(function(e) {
+                    $(document).off("mousemove");
+                    $(document).off("mouseup");
 
-            var positionX = parseInt(desk.css("left")) || 0;
-            var positionY = parseInt(desk.css("top")) || 0;
+                    var positionX = parseInt(desk.css("left")) || 0;
+                    var positionY = parseInt(desk.css("top")) || 0;
 
             var deskId = desk.data("desk-id");
 

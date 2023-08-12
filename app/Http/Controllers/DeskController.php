@@ -107,27 +107,12 @@ class DeskController extends Controller
 
     public function updatePosition(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'id' => 'required|exists:desks,id',
-                'position_x' => 'required|integer',
-                'position_y' => 'required|integer',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['error' => $validator->errors()->all(),], 422);
-            }
-
             $desk = Desk::findOrFail($request->id);
-            $desk->update([
-                'position_x' => $request->position_x,
-                'position_y' => $request->position_y,
-            ]);
+            $desk->position_x = $request->position_x;
+            $desk->position_y = $request->position_y;
+            $desk->save();
 
             return response()->json(['success' => 'Desk position updated successfully.']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred while updating desk position.'], 500);
-        }
     }
 
 }
