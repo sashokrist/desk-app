@@ -11,13 +11,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <style>
-        #draggable {width: 50px;height: 50px;}
-        #resizable { width: 50px; height: 50px;  }
+        #draggable {
+            width: 50px;
+            height: 50px;
+        }
+
+        #resizable {
+            width: 50px;
+            height: 50px;
+        }
+
         .container {
             position: relative;
             width: 800px;
             height: 800px;
         }
+
         .desk {
             position: absolute;
             width: 250px; /* Set the desired width of each desk */
@@ -30,12 +39,15 @@
             align-items: center;
             font-size: 12px;
         }
+
         .symbol {
             font-weight: bold;
         }
+
         .name {
             margin-top: 5px;
         }
+
         ul {
             list-style-type: none;
             margin: 0;
@@ -64,9 +76,9 @@
         $(function () {
             $("#draggable").draggable();
         });
-        $( function() {
-            $( "#resizable" ).resizable();
-        } );
+        $(function () {
+            $("#resizable").resizable();
+        });
     </script>
 </head>
 <body>
@@ -86,7 +98,8 @@
         @endif
     @else
         <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" v-pre>
                 {{ Auth::user()->name }}
             </a>
 
@@ -105,94 +118,94 @@
     @endguest
 </ul>
 <div class="container">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-                <div class="card-body">
-                    <div>
-                        <form>
-                            <div class="mb-3">
-                                <label for="searchKeyword" class="form-label">Search by Name or Symbol:</label>
-                                <input type="text" id="searchKeyword" name="searchKeyword" class="form-control"
-                                       placeholder="Enter name or symbol">
-                            </div>
-                            <button type="button" class="btn btn-primary" id="searchButton">Search</button>
-                            <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
-                                    data-bs-target="#postModal">Create Desk
-                            </button>
-                        </form>
-                    </div>
-                    <div id="map">
-                        @foreach($desks as $desk)
-                            <div id="draggable">
-                                <div id="resizable">
-                                    <div class="desk" data-desk-id="{{ $desk->id }}"
-                                         style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
-                                        <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
-                                        <div class="symbol">{{ $desk->category->name }}</div>
-                                        <div class="symbol">{{ $desk->symbol }}</div>
-                                        <div class="name">{{ $desk->name }}</div>
-                                        <div class="modal-header">
-                                            <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
-                                               class="btn btn-success">Edit Desk</a>
-                                            <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete Desk</button>
-                                            </form>
-                                        </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">{{ __('Dashboard') }}</div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="searchKeyword" class="form-label">Search by Name or Symbol:</label>
+                            <input type="text" id="searchKeyword" name="searchKeyword" class="form-control"
+                                   placeholder="Enter name or symbol">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+                                data-bs-target="#postModal">Create Desk
+                        </button>
+                    </form>
+                </div>
+                <div id="map">
+                    @foreach($desks as $desk)
+                        <div id="draggable">
+                            <div id="resizable">
+                                <div class="desk" data-desk-id="{{ $desk->id }}"
+                                     style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                                    <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
+                                    <div class="symbol">{{ $desk->category->name }}</div>
+                                    <div class="symbol">{{ $desk->symbol }}</div>
+                                    <div class="name">{{ $desk->name }}</div>
+                                    <div class="modal-header">
+                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
+                                           class="btn btn-success">Edit Desk</a>
+                                        <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete Desk</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
+            </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create Desk</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div id="map"></div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="alert alert-danger print-error-msg" style="display:none">
-                                        <ul></ul>
+            <!-- Modal -->
+            <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create Desk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div id="map"></div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="alert alert-danger print-error-msg" style="display:none">
+                                    <ul></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="mb-6 ">
+                                        <label class="form-label">Select Category</label>
+                                        <select id="category_id" name="category_id" class="form-control">
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <div class="mb-6 ">
-                                            <label class="form-label">Select Category</label>
-                                            <select id="category_id" name="category_id" class="form-control">
-                                                @foreach ($categories as $category)
-                                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Name:</label>
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Name"
-                                               required="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="symbol" class="form-label">Symbol:</label>
-                                        <input type="text" id="symbol" class="form-control">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <button class="btn btn-success btn-submit">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Name"
+                                           required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="symbol" class="form-label">Symbol:</label>
+                                    <input type="text" id="symbol" class="form-control">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-success btn-submit">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 </body>
 <script type="text/javascript">
@@ -246,9 +259,9 @@
             success: function (response) {
                 updateMapWithSearchResults(response);
             },
-               error: function (error) {
-                    console.log(error);
-                }
+            error: function (error) {
+                console.log(error);
+            }
         });
     }
 
@@ -284,7 +297,7 @@
                 // Handle success response if needed
             },
             error: function (error) {
-                // Handle error response if needed
+                printErrorMsg(data.error);
             }
         });
     }
@@ -295,30 +308,26 @@
         var initialX = e.clientX;
         var initialY = e.clientY;
 
-                $(document).mousemove(function(e) {
-                    var offsetX = e.clientX - initialX;
-                    var offsetY = e.clientY - initialY;
+        $(document).mousemove(function (e) {
+            var offsetX = e.clientX - initialX;
+            var offsetY = e.clientY - initialY;
 
-                    var currentX = parseInt(desk.css("left")) || 0;
-                    var currentY = parseInt(desk.css("top")) || 0;
+            var currentX = parseInt(desk.css("left")) || 0;
+            var currentY = parseInt(desk.css("top")) || 0;
 
-                    desk.css("left", currentX + offsetX + "px");
-                    desk.css("top", currentY + offsetY + "px");
+            desk.css("left", currentX + offsetX + "px");
+            desk.css("top", currentY + offsetY + "px");
 
-                    initialX = e.clientX;
-                    initialY = e.clientY;
-                });
-
-                $(document).mouseup(function(e) {
-                    $(document).off("mousemove");
-                    $(document).off("mouseup");
-
-                    var positionX = parseInt(desk.css("left")) || 0;
-                    var positionY = parseInt(desk.css("top")) || 0;
+            initialX = e.clientX;
+            initialY = e.clientY;
+        });
+        $(document).mouseup(function (e) {
+            $(document).off("mousemove");
+            $(document).off("mouseup");
+            var positionX = parseInt(desk.css("left")) || 0;
+            var positionY = parseInt(desk.css("top")) || 0;
 
             var deskId = desk.data("desk-id");
-
-            // Send updated position to the server
             updateDeskPosition(deskId, positionX, positionY);
         });
     });
@@ -339,7 +348,7 @@
                     location.reload();
                 },
                 error: function (error) {
-                    // Handle error response if needed
+                    printErrorMsg(data.error);
                 }
             });
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeskRequest;
 use App\Models\Category;
 use App\Models\Desk;
 use Illuminate\Http\Request;
@@ -18,19 +19,8 @@ class DeskController extends Controller
         return view('desk.create', compact('desks', 'categories'));
     }
 
-    public function store(Request $request)
+    public function store(DeskRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'symbol' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()->all()
-            ]);
-        }
-
         $desk = new Desk([
             'name' => $request->name,
             'symbol' => $request->symbol,
@@ -52,7 +42,7 @@ class DeskController extends Controller
         return view('desk.edit', compact('desk', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(DeskRequest $request, $id)
     {
         if (Gate::denies('viewAny', Desk::class)) {
             abort(403, 'Unauthorized');
@@ -67,8 +57,6 @@ class DeskController extends Controller
         }
 
         $desk->save();
-        $desks = Desk::get();
-        $categories = Category::all();
         return response()->json(['success' => 'Desk updated successfully.']);
     }
 
