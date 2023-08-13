@@ -149,9 +149,21 @@
                                     <div class="modal-header">
 {{--                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"--}}
 {{--                                           class="btn btn-success">Edit Desk</a>--}}
-                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
-                                                data-bs-target="#editModal">Edit
+{{--                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"--}}
+{{--                                                data-bs-target="#editModal">Edit--}}
+{{--                                        </button>--}}
+{{--                                        <button class="btn btn-primary edit-desk" data-desk-name="{{ $desk->name }}" data-toggle="modal" data-target="#editModal">--}}
+{{--                                            Edit--}}
+{{--                                        </button>--}}
+{{--                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"--}}
+{{--                                                data-name="{{ $desk->name }} "--}}
+{{--                                                data-bs-target="#editModal">Edit--}}
+{{--                                        </button>--}}
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}">
+                                            Edit
                                         </button>
+
                                         <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
@@ -214,7 +226,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Create Desk</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Desk</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
@@ -234,18 +246,15 @@
                                         </select>
                                     </div>
                                 </div>
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="name" class="form-label">Name:</label>--}}
-{{--                                    <input type="text" id="name" name="name" class="form-control" value=" placeholder="Name"--}}
-{{--                                           required="">--}}
-{{--                                </div>--}}
+                                <input type="hidden" id="editId" name="id"> <!-- Hidden input for desk ID -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name:</label>
-                                    <input type="text" id="edit-name" name="name" class="form-control" placeholder="Name" required="">
+                                    <input type="text" id="editName" name="name" class="form-control" placeholder="Name"
+                                           required="">
                                 </div>
                                 <div class="mb-3">
                                     <label for="symbol" class="form-label">Symbol:</label>
-                                    <input type="text" id="symbol" class="form-control">
+                                    <input type="text" id="editSymbol" name="symbol" class="form-control">
                                 </div>
                                 <div class="mb-3 text-center">
                                     <button class="btn btn-success btn-submit">Submit</button>
@@ -259,6 +268,19 @@
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var name = button.data('name');
+            var symbol = button.data('symbol');
+
+            var modal = $(this);
+            modal.find('#editName').val(name);
+            modal.find('#editSymbol').val(symbol);
+        });
+    });
+</script>
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -269,8 +291,8 @@
     $(".btn-submit").click(function (e) {
         e.preventDefault();
 
-        var name = $("#name").val();
-        var symbol = $("#symbol").val();
+        var name = $("#editName").val();
+        var symbol = $("#editSymbol").val();
         var category_id = $("#category_id").val();
         console.log(symbol);
 
@@ -295,11 +317,42 @@
             $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
         });
     }
-
+    // Handle the update action
     $(document).ready(function () {
-        $('.edit-desk').on('click', function () {
-            var deskName = $(this).data('desk-name');
-            $('#edit-name').val(deskName);
+
+        $('#posteditModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id'); // Retrieve the desk ID
+            var name = button.data('name');
+            var symbol = button.data('symbol');
+
+            var modal = $(this);
+            modal.find('#editId').val(id); // Set the desk ID
+            modal.find('#editName').val(name);
+            modal.find('#editSymbol').val(symbol);
+        });
+
+        // Handle the update action
+        $('.btn-update').click(function () {
+            var id = $('#editId').val();
+            var name = $('#editName').val();
+            var symbol = $('#editSymbol').val();
+
+            $.ajax({
+                type: 'PUT', // Use the HTTP method for update
+                url: "{{ route('desks.update', '') }}" + '/' + id, // Update the route
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    name: name,
+                    symbol: symbol
+                },
+                success: function (data) {
+                    location.reload(); // Refresh the page after successful update
+                },
+                error: function (error) {
+                    printErrorMsg(data.error);
+                }
+            });
         });
     });
     // Handle search button click

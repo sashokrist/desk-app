@@ -53,21 +53,6 @@ class DeskController extends Controller
     /**
      * Update the position of the desk
      *
-     * @param Desk $desk
-     * @return Application|Factory|\Illuminate\Foundation\Application|View
-     */
-    public function edit(Desk $desk)
-    {
-        if (Gate::denies('viewAny', Desk::class)) {
-            abort(403, 'Unauthorized');
-        }
-        $categories = Category::all();
-        return view('desk.edit', compact('desk', 'categories'));
-    }
-
-    /**
-     * Update the position of the desk
-     *
      * @param DeskRequest $request
      * @param $id
      * @return JsonResponse
