@@ -94,7 +94,7 @@ class DeskController extends Controller
      * Update the position of the desk
      *
      * @param $id
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function destroy($id)
     {
@@ -104,7 +104,7 @@ class DeskController extends Controller
         $desk = Desk::findOrFail($id);
         $desk->delete();
 
-        return redirect()->back();
+        return response()->json(['success' => 'Desk deleted successfully.']);
     }
 
     /**
@@ -121,7 +121,7 @@ class DeskController extends Controller
             ->orWhere('symbol', 'like', '%' . $keyword . '%')
             ->get();
 
-        return response()->json(['success' => 'Desk deleted successfully.']);
+        return response()->json($desks);
     }
 
     /**
