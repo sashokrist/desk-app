@@ -455,8 +455,7 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function (data) {
-                    alert(data.success);
-                    location.reload();
+
                 },
                 error: function (error) {
                     printErrorMsg(data.error);
