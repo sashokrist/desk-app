@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeskRequest;
+use App\Http\Requests\UpdatePositionRequest;
 use App\Models\Category;
 use App\Models\Desk;
 use Illuminate\Contracts\Foundation\Application;
@@ -115,7 +116,7 @@ class DeskController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function updatePosition(Request $request)
+    public function updatePosition(UpdatePositionRequest $request)
     {
             $desk = Desk::findOrFail($request->id);
             $desk->position_x = $request->position_x;
