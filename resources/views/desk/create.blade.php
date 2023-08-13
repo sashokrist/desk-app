@@ -210,49 +210,6 @@
                     </div>
                 </div>
             </div>
-{{--            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"--}}
-{{--                 aria-hidden="true">--}}
-{{--                <div class="modal-dialog">--}}
-{{--                    <div class="modal-content">--}}
-{{--                        <div class="modal-header">--}}
-{{--                            <h5 class="modal-title" id="exampleModalLabel">Edit Desk</h5>--}}
-{{--                            <button type="button" class="btn-close" data-bs-dismiss="modal"--}}
-{{--                                    aria-label="Close"></button>--}}
-{{--                        </div>--}}
-{{--                        <div id="map"></div>--}}
-{{--                        <div class="modal-body">--}}
-{{--                            <form>--}}
-{{--                                <div class="alert alert-danger print-error-msg" style="display:none">--}}
-{{--                                    <ul></ul>--}}
-{{--                                </div>--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <div class="mb-6 ">--}}
-{{--                                        <label class="form-label">Select Category</label>--}}
-{{--                                        <select id="category_id" name="category_id" class="form-control">--}}
-{{--                                            @foreach ($categories as $category)--}}
-{{--                                                <option value="{{$category->id}}">{{$category->name}}</option>--}}
-{{--                                            @endforeach--}}
-{{--                                        </select>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <input type="hidden" id="editId" name="editId"> <!-- Hidden input for desk ID -->--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="editName" class="form-label">Name:</label>--}}
-{{--                                    <input type="text" id="editName" name="editName" class="form-control" placeholder="Name"--}}
-{{--                                           required="">--}}
-{{--                                </div>--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="editSymbol" class="form-label">Symbol:</label>--}}
-{{--                                    <input type="text" id="editSymbol" name="editSymbol" class="form-control">--}}
-{{--                                </div>--}}
-{{--                                <div class="mb-3 text-center">--}}
-{{--                                    <button class="btn btn-success btn-update">Submit</button>--}}
-{{--                                </div>--}}
-{{--                            </form>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
         </div>
     </div>
 </div>
@@ -306,20 +263,6 @@
             $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
         });
     }
-    // Handle the update action
-    // $(document).ready(function () {
-    //
-    //     $('#editModal').on('show.bs.modal', function (event) {
-    //         var button = $(event.relatedTarget);
-    //         var editId = button.data('editId'); // Retrieve the desk ID
-    //         var editName = button.data('editName');
-    //         var editSymbol = button.data('editSymbol');
-    //
-    //         var modal = $(this);
-    //         modal.find('#editId').val(editId); // Set the desk ID
-    //         modal.find('#editName').val(editName);
-    //         modal.find('#editSymbol').val(editSymbol);
-    //     });
 
         // Handle the update action
         $('.btn-update').click(function () {
