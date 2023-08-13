@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Desk;
+use App\Policies\AllowAllPolicy;
 use App\Policies\DeskPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // ...
         Desk::class => DeskPolicy::class,
+        Desk::class => AllowAllPolicy::class,
     ];
 
     /**
