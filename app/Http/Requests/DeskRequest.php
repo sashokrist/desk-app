@@ -24,8 +24,6 @@ class DeskRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'symbol' => 'required|string|max:3',
-            'position_x' => 'required|int',
-            'position_y' => 'required|int',
         ];
     }
 }

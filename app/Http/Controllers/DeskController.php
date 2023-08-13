@@ -34,10 +34,10 @@ class DeskController extends Controller
     /**
      * Update the position of the desk
      *
-     * @param Request $request
+     * @param DeskRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(DeskRequest $request)
     {
         $desk = new Desk([
             'name' => $request->name,
@@ -56,14 +56,15 @@ class DeskController extends Controller
         $categories = Category::all();
         return view('desk.edit', compact('desk', 'categories'));
     }
+
     /**
      * Update the position of the desk
      *
-     * @param Request $request
+     * @param DeskRequest $request
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(DeskRequest $request, $id)
     {
         if (Gate::denies('viewAny', Desk::class)) {
             abort(403, 'Unauthorized');
