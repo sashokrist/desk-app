@@ -10,6 +10,7 @@
                         <form action="{{ route('desks.update', ['id' => $desk->id]) }}" method="post">
                             @csrf
                             @method('PUT')
+                            {{ csrf_field() }}
                             <div class="alert alert-danger print-error-msg" style="display:none">
                                 <ul></ul>
                             </div>
