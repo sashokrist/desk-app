@@ -9,7 +9,8 @@
 
                     <div class="card-body text-center">
                         <a href="{{ route('desks.index') }}" class="btn btn-primary">View Desk DashBoard</a> <br>
-                        <span>Only admin can perform update and delete</span>
+                        <span>Only admin can perform update and delete</span><br>
+                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
                 </div>
             </div>
