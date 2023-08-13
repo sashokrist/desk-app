@@ -8,8 +8,8 @@
                     <div class="card-header"><h1 class="text-center">{{ __('Desks app') }}</h1></div>
 
                     <div class="card-body text-center">
-                        <a href="{{ route('desks.index') }}" class="btn btn-primary">View Desk DashBoard</a> <br>
-                        <span>Only admin can perform update and delete</span><br>
+                        <h4>Login to view Desk dashboard</h4> <br>
+                        <h4>Only admin can perform update and delete</h4><br>
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
                 </div>

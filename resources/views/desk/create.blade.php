@@ -145,6 +145,7 @@
                                     <div class="symbol">{{ $desk->category->name }}</div>
                                     <div class="symbol">{{ $desk->symbol }}</div>
                                     <div class="name">{{ $desk->name }}</div>
+{{--                                @can('viewAny', auth()->user())>--}}
                                     <div class="modal-header">
                                         <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
                                            class="btn btn-success">Edit Desk</a>
@@ -155,6 +156,7 @@
                                         </form>
                                     </div>
                                 </div>
+{{--                                @endcan--}}
                             </div>
                         </div>
                     @endforeach

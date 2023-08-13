@@ -18,7 +18,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // ...
         Desk::class => DeskPolicy::class,
-        Desk::class => AllowAllPolicy::class,
     ];
 
     /**
