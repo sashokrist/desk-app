@@ -22,10 +22,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/desks/', [DeskController::class, 'index'])->name('desks.index');
-    Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
-    Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
-    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
-    Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
-    Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
-    Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');
+//    Route::get('/desks/', [DeskController::class, 'index'])->name('desks.index');
+//    Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
+//    Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
+//    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
+//    Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
+//    Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
+//    Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');

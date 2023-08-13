@@ -147,8 +147,11 @@
                                     <div class="name">{{ $desk->name }}</div>
 {{--                                @can('viewAny', auth()->user())>--}}
                                     <div class="modal-header">
-                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"
-                                           class="btn btn-success">Edit Desk</a>
+{{--                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"--}}
+{{--                                           class="btn btn-success">Edit Desk</a>--}}
+                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+                                                data-bs-target="#editModal">Edit
+                                        </button>
                                         <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
@@ -206,6 +209,52 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create Desk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div id="map"></div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="alert alert-danger print-error-msg" style="display:none">
+                                    <ul></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="mb-6 ">
+                                        <label class="form-label">Select Category</label>
+                                        <select id="category_id" name="category_id" class="form-control">
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+{{--                                <div class="mb-3">--}}
+{{--                                    <label for="name" class="form-label">Name:</label>--}}
+{{--                                    <input type="text" id="name" name="name" class="form-control" value=" placeholder="Name"--}}
+{{--                                           required="">--}}
+{{--                                </div>--}}
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="edit-name" name="name" class="form-control" placeholder="Name" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="symbol" class="form-label">Symbol:</label>
+                                    <input type="text" id="symbol" class="form-control">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-success btn-submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -246,6 +295,13 @@
             $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
         });
     }
+
+    $(document).ready(function () {
+        $('.edit-desk').on('click', function () {
+            var deskName = $(this).data('desk-name');
+            $('#edit-name').val(deskName);
+        });
+    });
     // Handle search button click
     $("#searchButton").click(function (e) {
         e.preventDefault();

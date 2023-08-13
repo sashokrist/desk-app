@@ -14,10 +14,28 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+    return ['token' => $token->plainTextToken];
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Desks API routes
+    Route::get('/desks', [DeskController::class, 'index'])->name('desks.index');
+    Route::get('/desks/{desk}', [DeskController::class, 'show'])->name('desks.show');
+    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
+    Route::put('/desks/{desk}', [DeskController::class, 'update'])->name('desks.update');
+    Route::delete('/desks/{desk}', [DeskController::class, 'destroy'])->name('desks.destroy');
+    Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
+    Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');
+});
+
+
 
 ////Route::middleware(['auth'])->group(function () {
 //    Route::get('/desks/', [DeskController::class, 'index']);
