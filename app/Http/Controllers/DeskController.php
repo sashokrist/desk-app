@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeskRequest;
 use App\Models\Category;
 use App\Models\Desk;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class DeskController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function index()
     {
         $categories = Category::all();
@@ -19,6 +30,12 @@ class DeskController extends Controller
         return view('desk.create', compact('desks', 'categories'));
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param DeskRequest $request
+     * @return JsonResponse
+     */
     public function store(DeskRequest $request)
     {
         $desk = new Desk([
@@ -33,6 +50,12 @@ class DeskController extends Controller
         return response()->json(['success' => 'Desk created successfully.']);
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param Desk $desk
+     * @return Application|Factory|\Illuminate\Foundation\Application|View
+     */
     public function edit(Desk $desk)
     {
         if (Gate::denies('viewAny', Desk::class)) {
@@ -42,6 +65,13 @@ class DeskController extends Controller
         return view('desk.edit', compact('desk', 'categories'));
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param DeskRequest $request
+     * @param $id
+     * @return JsonResponse
+     */
     public function update(DeskRequest $request, $id)
     {
         if (Gate::denies('viewAny', Desk::class)) {
@@ -60,6 +90,12 @@ class DeskController extends Controller
         return response()->json(['success' => 'Desk updated successfully.']);
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param $id
+     * @return RedirectResponse
+     */
     public function destroy($id)
     {
         if (Gate::denies('viewAny', Desk::class)) {
@@ -71,6 +107,12 @@ class DeskController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -82,6 +124,12 @@ class DeskController extends Controller
         return response()->json($desks);
     }
 
+    /**
+     * Update the position of the desk
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updatePosition(Request $request)
     {
             $desk = Desk::findOrFail($request->id);

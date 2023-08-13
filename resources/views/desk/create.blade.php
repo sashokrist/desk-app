@@ -214,7 +214,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
+    // Handle form submission
     $(".btn-submit").click(function (e) {
         e.preventDefault();
 
@@ -236,7 +236,7 @@
             }
         });
     });
-
+    // Display error messages
     function printErrorMsg(msg) {
         $(".print-error-msg").find("ul").html('');
         $(".print-error-msg").css('display', 'block');
@@ -244,13 +244,13 @@
             $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
         });
     }
-
+    // Handle search button click
     $("#searchButton").click(function (e) {
         e.preventDefault();
         var searchKeyword = $("#searchKeyword").val();
         performSearch(searchKeyword);
     });
-
+    // Perform search using AJAX
     function performSearch(keyword) {
         $.ajax({
             type: "GET",
@@ -264,7 +264,7 @@
             }
         });
     }
-
+    // Update map with search results
     function updateMapWithSearchResults(desks) {
         $("#map").empty(); // Clear existing desks
 
@@ -281,7 +281,7 @@
             $("#map").append(deskHtml);
         });
     }
-
+    // Update desk position
     function updateDeskPosition(deskId, positionX, positionY) {
         console.log(deskId, positionX, positionY);
         $.ajax({
@@ -301,7 +301,7 @@
             }
         });
     }
-
+    // Handle desk drag and drop
     $(".desk").mousedown(function (e) {
         e.preventDefault();
         var desk = $(this);
@@ -331,7 +331,7 @@
             updateDeskPosition(deskId, positionX, positionY);
         });
     });
-    // Delete Desk
+    // Handle desk deletion
     $(".delete-desk").click(function (e) {
         e.preventDefault();
         var deskId = $(this).data("desk-id");
