@@ -51,14 +51,19 @@ class DeskController extends Controller
         return response()->json(['success' => 'Desk created successfully.']);
     }
 
+    public function edit(Desk $desk)
+    {
+        $categories = Category::all();
+        return view('desk.edit', compact('desk', 'categories'));
+    }
     /**
      * Update the position of the desk
      *
-     * @param DeskRequest $request
+     * @param Request $request
      * @param $id
      * @return JsonResponse
      */
-    public function update(DeskRequest $request, $id)
+    public function update(Request $request, $id)
     {
         if (Gate::denies('viewAny', Desk::class)) {
             abort(403, 'Unauthorized');
@@ -116,7 +121,7 @@ class DeskController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function updatePosition(UpdatePositionRequest $request)
+    public function updatePosition(Request $request)
     {
             $desk = Desk::findOrFail($request->id);
             $desk->position_x = $request->position_x;

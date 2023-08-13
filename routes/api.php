@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     // Desks API routes
     Route::get('/desks/', [DeskController::class, 'index'])->name('desks.index');
-    //Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
+    Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
     Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
     Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
     Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');

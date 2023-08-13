@@ -147,10 +147,11 @@
                                     <div class="name">{{ $desk->name }}</div>
 {{--                                @can('viewAny', auth()->user())>--}}
                                     <div class="modal-header">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}">
-                                            Edit
-                                        </button>
+{{--                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"--}}
+{{--                                                data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}">--}}
+{{--                                            Edit--}}
+{{--                                        </button>--}}
+                                        <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>
 
                                         <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
                                             @csrf
@@ -209,49 +210,49 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Desk</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div id="map"></div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="alert alert-danger print-error-msg" style="display:none">
-                                    <ul></ul>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="mb-6 ">
-                                        <label class="form-label">Select Category</label>
-                                        <select id="category_id" name="category_id" class="form-control">
-                                            @foreach ($categories as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <input type="hidden" id="editId" name="id"> <!-- Hidden input for desk ID -->
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Name:</label>
-                                    <input type="text" id="editName" name="name" class="form-control" placeholder="Name"
-                                           required="">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="symbol" class="form-label">Symbol:</label>
-                                    <input type="text" id="editSymbol" name="symbol" class="form-control">
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <button class="btn btn-success btn-submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"--}}
+{{--                 aria-hidden="true">--}}
+{{--                <div class="modal-dialog">--}}
+{{--                    <div class="modal-content">--}}
+{{--                        <div class="modal-header">--}}
+{{--                            <h5 class="modal-title" id="exampleModalLabel">Edit Desk</h5>--}}
+{{--                            <button type="button" class="btn-close" data-bs-dismiss="modal"--}}
+{{--                                    aria-label="Close"></button>--}}
+{{--                        </div>--}}
+{{--                        <div id="map"></div>--}}
+{{--                        <div class="modal-body">--}}
+{{--                            <form>--}}
+{{--                                <div class="alert alert-danger print-error-msg" style="display:none">--}}
+{{--                                    <ul></ul>--}}
+{{--                                </div>--}}
+{{--                                <div class="mb-3">--}}
+{{--                                    <div class="mb-6 ">--}}
+{{--                                        <label class="form-label">Select Category</label>--}}
+{{--                                        <select id="category_id" name="category_id" class="form-control">--}}
+{{--                                            @foreach ($categories as $category)--}}
+{{--                                                <option value="{{$category->id}}">{{$category->name}}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <input type="hidden" id="editId" name="editId"> <!-- Hidden input for desk ID -->--}}
+{{--                                <div class="mb-3">--}}
+{{--                                    <label for="editName" class="form-label">Name:</label>--}}
+{{--                                    <input type="text" id="editName" name="editName" class="form-control" placeholder="Name"--}}
+{{--                                           required="">--}}
+{{--                                </div>--}}
+{{--                                <div class="mb-3">--}}
+{{--                                    <label for="editSymbol" class="form-label">Symbol:</label>--}}
+{{--                                    <input type="text" id="editSymbol" name="editSymbol" class="form-control">--}}
+{{--                                </div>--}}
+{{--                                <div class="mb-3 text-center">--}}
+{{--                                    <button class="btn btn-success btn-update">Submit</button>--}}
+{{--                                </div>--}}
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 </div>
@@ -260,12 +261,12 @@
     $(document).ready(function () {
         $('#editModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
-            var name = button.data('name');
-            var symbol = button.data('symbol');
+            var editName = button.data('editName');
+            var editSymbol = button.data('editSymbol');
 
             var modal = $(this);
-            modal.find('#editName').val(name);
-            modal.find('#editSymbol').val(symbol);
+            modal.find('#editName').val(editName);
+            modal.find('#editSymbol').val(editSymbol);
         });
     });
 </script>
@@ -306,29 +307,29 @@
         });
     }
     // Handle the update action
-    $(document).ready(function () {
-
-        $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id'); // Retrieve the desk ID
-            var name = button.data('name');
-            var symbol = button.data('symbol');
-
-            var modal = $(this);
-            modal.find('#editId').val(id); // Set the desk ID
-            modal.find('#editName').val(name);
-            modal.find('#editSymbol').val(symbol);
-        });
+    // $(document).ready(function () {
+    //
+    //     $('#editModal').on('show.bs.modal', function (event) {
+    //         var button = $(event.relatedTarget);
+    //         var editId = button.data('editId'); // Retrieve the desk ID
+    //         var editName = button.data('editName');
+    //         var editSymbol = button.data('editSymbol');
+    //
+    //         var modal = $(this);
+    //         modal.find('#editId').val(editId); // Set the desk ID
+    //         modal.find('#editName').val(editName);
+    //         modal.find('#editSymbol').val(editSymbol);
+    //     });
 
         // Handle the update action
         $('.btn-update').click(function () {
-            var id = $('#editId').val();
+            var editId = $('#editId').val();
             var name = $('#editName').val();
             var symbol = $('#editSymbol').val();
 
             $.ajax({
                 type: 'PUT', // Use the HTTP method for update
-                url: "{{ route('desks.update', '') }}" + '/' + id, // Update the route
+                url: "{{ route('desks.update', '') }}" + '/' + editId, // Update the route
                 data: {
                     _token: "{{ csrf_token() }}",
                     name: name,
@@ -341,7 +342,6 @@
                     printErrorMsg(data.error);
                 }
             });
-        });
     });
     // Handle search button click
     $("#searchButton").click(function (e) {
