@@ -121,7 +121,7 @@ class DeskController extends Controller
             ->orWhere('symbol', 'like', '%' . $keyword . '%')
             ->get();
 
-        return response()->json($desks);
+        return response()->json(['success' => 'Desk deleted successfully.']);
     }
 
     /**
