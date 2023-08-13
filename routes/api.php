@@ -26,27 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     // Desks API routes
-    Route::get('/desks', [DeskController::class, 'index'])->name('desks.index');
-    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
-    Route::put('/desks/{desk}', [DeskController::class, 'update'])->name('desks.update');
-    Route::delete('/desks/{desk}', [DeskController::class, 'destroy'])->name('desks.destroy');
+    Route::get('/desks/', [DeskController::class, 'index'])->name('desks.index');
+    //Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
     Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
+    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
+    Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
+    Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
     Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');
 });
 
-
-
-////Route::middleware(['auth'])->group(function () {
-//    Route::get('/desks/', [DeskController::class, 'index']);
-//    // Route::get('/desks/edit', [DeskController::class, 'edit'])->name('desks.edit');
-//    Route::get('desks/{desk}/edit', [DeskController::class, 'edit'])->name('desks.edit');
-//
-//    // Route::put('/desks/', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
-//    Route::post('/desks/updatePosition', [DeskController::class, 'updatePosition'])->name('desks.updatePosition');
-//    Route::post('/desks', [DeskController::class, 'store'])->name('desks.store');
-//    Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
-//    Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
-//
-//// Add the following route for searching desks
-//    Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');
-////});

@@ -147,18 +147,6 @@
                                     <div class="name">{{ $desk->name }}</div>
 {{--                                @can('viewAny', auth()->user())>--}}
                                     <div class="modal-header">
-{{--                                        <a href="{{ route('desks.edit', ['desk' => $desk->id]) }}"--}}
-{{--                                           class="btn btn-success">Edit Desk</a>--}}
-{{--                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"--}}
-{{--                                                data-bs-target="#editModal">Edit--}}
-{{--                                        </button>--}}
-{{--                                        <button class="btn btn-primary edit-desk" data-desk-name="{{ $desk->name }}" data-toggle="modal" data-target="#editModal">--}}
-{{--                                            Edit--}}
-{{--                                        </button>--}}
-{{--                                        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal"--}}
-{{--                                                data-name="{{ $desk->name }} "--}}
-{{--                                                data-bs-target="#editModal">Edit--}}
-{{--                                        </button>--}}
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
                                                 data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}">
                                             Edit
@@ -211,7 +199,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="symbol" class="form-label">Symbol:</label>
-                                    <input type="text" id="symbol" class="form-control">
+                                    <input type="text" id="symbol" name="symbol" class="form-control">
                                 </div>
                                 <div class="mb-3 text-center">
                                     <button class="btn btn-success btn-submit">Submit</button>
@@ -291,8 +279,8 @@
     $(".btn-submit").click(function (e) {
         e.preventDefault();
 
-        var name = $("#editName").val();
-        var symbol = $("#editSymbol").val();
+        var name = $("#name").val();
+        var symbol = $("#symbol").val();
         var category_id = $("#category_id").val();
         console.log(symbol);
 
@@ -320,7 +308,7 @@
     // Handle the update action
     $(document).ready(function () {
 
-        $('#posteditModal').on('show.bs.modal', function (event) {
+        $('#editModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id = button.data('id'); // Retrieve the desk ID
             var name = button.data('name');

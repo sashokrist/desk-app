@@ -34,10 +34,10 @@ class DeskController extends Controller
     /**
      * Update the position of the desk
      *
-     * @param DeskRequest $request
+     * @param Request $request
      * @return JsonResponse
      */
-    public function store(DeskRequest $request)
+    public function store(Request $request)
     {
         $desk = new Desk([
             'name' => $request->name,
