@@ -83,7 +83,7 @@
 </head>
 <body>
 <ul>
-    <li><a class="active" href="{{ route('desks.index') }}">Home</a></li>
+{{--    <li><a class="active" href="{{ route('desks.index') }}">Home</a></li>--}}
     @guest
         @if (Route::has('login'))
             <li class="nav-item">
