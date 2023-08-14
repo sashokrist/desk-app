@@ -76,31 +76,14 @@
                 </div>
                 <div id="map">
                     @foreach($desks as $desk)
-{{--                        <div id="draggable">--}}
-{{--                            <div id="resizable">--}}
-{{--                                <div class="desk  draggable resizable" data-desk-id="{{ $desk->id }}"--}}
-{{--                                     style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">--}}
-{{--                                    <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>--}}
-{{--                                    <div class="symbol">{{ $desk->category->name }}</div>--}}
-{{--                                    <form action="{{ route('desks.destroy', $desk->id) }}" method="post">--}}
-{{--                                        @csrf--}}
-{{--                                        <div class="symbol">{{ $desk->symbol }}</div>--}}
-{{--                                    <div class="name">{{ $desk->name }}</div>--}}
-{{--                                    <div class="modal-header">--}}
-{{--                                        <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>--}}
-
-{{--                                               @method('DELETE')--}}
-{{--                                            <button type="submit" class="btn btn-danger">Delete Desk</button>--}}
-{{--                                        </form>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                         <div class="desk draggable resizable" data-desk-id="{{ $desk->id }}"
-                             style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                             style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;
+                              width: {{ $desk->width }}px; height: {{ $desk->height }}px;">
                             <input type="hidden" class="deskId" value="{{ $desk->id }}">
                             <input type="hidden" class="deskPositionX" value="{{ $desk->position_x }}">
                             <input type="hidden" class="deskPositionY" value="{{ $desk->position_y }}">
-                            <input type="hidden" class="deskWidth" value="250"> <!-- Default width -->
-                            <input type="hidden" class="deskHeight" value="150"> <!-- Default height -->
+                            <input type="hidden" class="deskWidth" value="{{ $desk->width }}"> <!-- Default width -->
+                            <input type="hidden" class="deskHeight" value="{{ $desk->height }}"> <!-- Default height -->
                             <div class="symbol">{{ $desk->category->name }}</div>
                             <div class="symbol">{{ $desk->symbol }}</div>
                             <div class="name">{{ $desk->name }}</div>
@@ -297,36 +280,6 @@
         });
     }
 
-    // Handle desk drag and drop
-    // $(".desk").mousedown(function (e) {
-    //     e.preventDefault();
-    //     var desk = $(this);
-    //     var initialX = e.clientX;
-    //     var initialY = e.clientY;
-    //
-    //     $(document).mousemove(function (e) {
-    //         var offsetX = e.clientX - initialX;
-    //         var offsetY = e.clientY - initialY;
-    //
-    //         var currentX = parseInt(desk.css("left")) || 0;
-    //         var currentY = parseInt(desk.css("top")) || 0;
-    //
-    //         desk.css("left", currentX + offsetX + "px");
-    //         desk.css("top", currentY + offsetY + "px");
-    //
-    //         initialX = e.clientX;
-    //         initialY = e.clientY;
-    //     });
-    //     $(document).mouseup(function (e) {
-    //         $(document).off("mousemove");
-    //         $(document).off("mouseup");
-    //         var positionX = parseInt(desk.css("left")) || 0;
-    //         var positionY = parseInt(desk.css("top")) || 0;
-    //
-    //         var deskId = desk.data("desk-id");
-    //         updateDeskPosition(deskId, positionX, positionY);
-    //     });
-    // });
     $(".desk").mousedown(function (e) {
         e.preventDefault();
         var desk = $(this);

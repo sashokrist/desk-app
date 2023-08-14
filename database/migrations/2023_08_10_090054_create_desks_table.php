@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('symbol');
             $table->integer('position_x')->default(80);
             $table->integer('position_y')->default(240);
-            $table->integer('width')->nullable();
-            $table->integer('height')->nullable();
+            $table->integer('width')->default(250);
+            $table->integer('height')->default(150);
             $table->unsignedInteger('category_id');
             $table->timestamps();
         });
