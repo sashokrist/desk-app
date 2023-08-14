@@ -16,7 +16,7 @@
             $("#draggable").draggable();
         });
         $(function () {
-            $("#resizable").resizable();
+            $(".resizable").resizable();
         });
     </script>
 </head>
@@ -77,8 +77,8 @@
                 <div id="map">
                     @foreach($desks as $desk)
                         <div id="draggable">
-                            <div id="resizable">
-                                <div class="desk" data-desk-id="{{ $desk->id }}"
+{{--                            <div id="resizable">--}}
+                                <div class="desk resizable" data-desk-id="{{ $desk->id }}"
                                      style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
                                     <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
                                     <div class="symbol">{{ $desk->category->name }}</div>
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
 {{--                                @endcan--}}
-                            </div>
+{{--                            </div>--}}
                         </div>
                     @endforeach
                 </div>
