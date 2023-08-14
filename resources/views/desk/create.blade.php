@@ -13,7 +13,7 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
         $(function () {
-            $("#draggable").draggable();
+            $(".draggable").draggable();
         });
         $(function () {
             $(".resizable").resizable();
@@ -76,20 +76,15 @@
                 </div>
                 <div id="map">
                     @foreach($desks as $desk)
-                        <div id="draggable">
+{{--                        <div id="draggable">--}}
 {{--                            <div id="resizable">--}}
-                                <div class="desk resizable" data-desk-id="{{ $desk->id }}"
+                                <div class="desk  draggable resizable" data-desk-id="{{ $desk->id }}"
                                      style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
                                     <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
                                     <div class="symbol">{{ $desk->category->name }}</div>
                                     <div class="symbol">{{ $desk->symbol }}</div>
                                     <div class="name">{{ $desk->name }}</div>
-{{--                                @can('viewAny', auth()->user())>--}}
                                     <div class="modal-header">
-{{--                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"--}}
-{{--                                                data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}">--}}
-{{--                                            Edit--}}
-{{--                                        </button>--}}
                                         <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>
 
                                         <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
@@ -99,9 +94,6 @@
                                         </form>
                                     </div>
                                 </div>
-{{--                                @endcan--}}
-{{--                            </div>--}}
-                        </div>
                     @endforeach
                 </div>
             </div>
