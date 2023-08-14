@@ -5,73 +5,12 @@
     <title>Add desk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- Link to your app.css file -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <style>
-        #draggable {
-            width: 50px;
-            height: 50px;
-        }
-
-        #resizable {
-            width: 50px;
-            height: 50px;
-        }
-
-        .container {
-            position: relative;
-            width: 800px;
-            height: 800px;
-        }
-
-        .desk {
-            position: absolute;
-            width: 250px; /* Set the desired width of each desk */
-            height: 150px; /* Set the desired height of each desk */
-            background-color: #ffcc00; /* Set the background color */
-            border: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-        }
-
-        .symbol {
-            font-weight: bold;
-        }
-
-        .name {
-            margin-top: 5px;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        li {
-            float: left;
-        }
-
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover {
-            background-color: #111;
-        }
-    </style>
     <script>
         $(function () {
             $("#draggable").draggable();
@@ -395,3 +334,4 @@
         }
     });
 </script>
+</html>
