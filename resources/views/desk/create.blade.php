@@ -78,22 +78,42 @@
                     @foreach($desks as $desk)
 {{--                        <div id="draggable">--}}
 {{--                            <div id="resizable">--}}
-                                <div class="desk  draggable resizable" data-desk-id="{{ $desk->id }}"
-                                     style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
-                                    <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>
-                                    <div class="symbol">{{ $desk->category->name }}</div>
-                                    <div class="symbol">{{ $desk->symbol }}</div>
-                                    <div class="name">{{ $desk->name }}</div>
-                                    <div class="modal-header">
-                                        <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>
+{{--                                <div class="desk  draggable resizable" data-desk-id="{{ $desk->id }}"--}}
+{{--                                     style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">--}}
+{{--                                    <input type="hidden" id="deskId" value="{{ $desk->id }}"></input>--}}
+{{--                                    <div class="symbol">{{ $desk->category->name }}</div>--}}
+{{--                                    <form action="{{ route('desks.destroy', $desk->id) }}" method="post">--}}
+{{--                                        @csrf--}}
+{{--                                        <div class="symbol">{{ $desk->symbol }}</div>--}}
+{{--                                    <div class="name">{{ $desk->name }}</div>--}}
+{{--                                    <div class="modal-header">--}}
+{{--                                        <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>--}}
 
-                                        <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete Desk</button>
-                                        </form>
-                                    </div>
-                                </div>
+{{--                                               @method('DELETE')--}}
+{{--                                            <button type="submit" class="btn btn-danger">Delete Desk</button>--}}
+{{--                                        </form>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+                        <div class="desk draggable resizable" data-desk-id="{{ $desk->id }}"
+                             style="left: {{ $desk->position_x }}px; top: {{ $desk->position_y }}px;">
+                            <input type="hidden" class="deskId" value="{{ $desk->id }}">
+                            <input type="hidden" class="deskPositionX" value="{{ $desk->position_x }}">
+                            <input type="hidden" class="deskPositionY" value="{{ $desk->position_y }}">
+                            <input type="hidden" class="deskWidth" value="250"> <!-- Default width -->
+                            <input type="hidden" class="deskHeight" value="150"> <!-- Default height -->
+                            <div class="symbol">{{ $desk->category->name }}</div>
+                            <div class="symbol">{{ $desk->symbol }}</div>
+                            <div class="name">{{ $desk->name }}</div>
+                            <div class="modal-header">
+                                <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>
+
+                                <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete Desk</button>
+                                </form>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -255,8 +275,8 @@
         });
     }
     // Update desk position
-    function updateDeskPosition(deskId, positionX, positionY) {
-        console.log(deskId, positionX, positionY);
+    function updateDeskPosition(deskId, positionX, positionY, width, height) {
+        console.log(deskId, positionX, positionY, width, height);
         $.ajax({
             type: "POST",
             url: "{{ route('desks.updatePosition') }}",
@@ -264,7 +284,9 @@
                 _token: "{{ csrf_token() }}",
                 id: deskId,
                 position_x: positionX,
-                position_y: positionY
+                position_y: positionY,
+                width: width, // Include the width value
+                height: height // Include the height value
             },
             success: function (response) {
                 // Handle success response if needed
@@ -274,12 +296,47 @@
             }
         });
     }
+
     // Handle desk drag and drop
+    // $(".desk").mousedown(function (e) {
+    //     e.preventDefault();
+    //     var desk = $(this);
+    //     var initialX = e.clientX;
+    //     var initialY = e.clientY;
+    //
+    //     $(document).mousemove(function (e) {
+    //         var offsetX = e.clientX - initialX;
+    //         var offsetY = e.clientY - initialY;
+    //
+    //         var currentX = parseInt(desk.css("left")) || 0;
+    //         var currentY = parseInt(desk.css("top")) || 0;
+    //
+    //         desk.css("left", currentX + offsetX + "px");
+    //         desk.css("top", currentY + offsetY + "px");
+    //
+    //         initialX = e.clientX;
+    //         initialY = e.clientY;
+    //     });
+    //     $(document).mouseup(function (e) {
+    //         $(document).off("mousemove");
+    //         $(document).off("mouseup");
+    //         var positionX = parseInt(desk.css("left")) || 0;
+    //         var positionY = parseInt(desk.css("top")) || 0;
+    //
+    //         var deskId = desk.data("desk-id");
+    //         updateDeskPosition(deskId, positionX, positionY);
+    //     });
+    // });
     $(".desk").mousedown(function (e) {
         e.preventDefault();
         var desk = $(this);
         var initialX = e.clientX;
         var initialY = e.clientY;
+
+        var deskPositionX = desk.find(".deskPositionX").val(); // Store the initial X position
+        var deskPositionY = desk.find(".deskPositionY").val(); // Store the initial Y position
+        var deskWidth = desk.find(".deskWidth").val(); // Store the initial width
+        var deskHeight = desk.find(".deskHeight").val(); // Store the initial height
 
         $(document).mousemove(function (e) {
             var offsetX = e.clientX - initialX;
@@ -294,16 +351,60 @@
             initialX = e.clientX;
             initialY = e.clientY;
         });
+
         $(document).mouseup(function (e) {
             $(document).off("mousemove");
             $(document).off("mouseup");
+
             var positionX = parseInt(desk.css("left")) || 0;
             var positionY = parseInt(desk.css("top")) || 0;
-
             var deskId = desk.data("desk-id");
-            updateDeskPosition(deskId, positionX, positionY);
+
+            // Update the hidden input values
+            desk.find(".deskPositionX").val(positionX);
+            desk.find(".deskPositionY").val(positionY);
+            desk.find(".deskWidth").val(desk.width());
+            desk.find(".deskHeight").val(desk.height());
+
+            // Send updated position, width, and height to the server
+            updateDeskPosition(deskId, positionX, positionY, desk.width(), desk.height());
         });
     });
+
+
+    $(function () {
+        // Make the desk element resizable
+        $(".resizable").resizable({
+            stop: function (event, ui) {
+                var deskId = $(this).find(".deskId").val();
+                var deskWidth = ui.size.width;
+                var deskHeight = ui.size.height;
+
+                // Update the desk size using AJAX
+                updateDeskSize(deskId, deskWidth, deskHeight);
+            }
+        });
+    });
+
+    function updateDeskSize(deskId, width, height) {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('desks.updateSize') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: deskId,
+                width: width,
+                height: height
+            },
+            success: function (response) {
+                // Handle success response if needed
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
     // Handle desk deletion
     $(".delete-desk").click(function (e) {
         e.preventDefault();

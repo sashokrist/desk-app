@@ -124,11 +124,32 @@ class DeskController extends Controller
      */
     public function updatePosition(Request $request)
     {
-            $desk = Desk::findOrFail($request->id);
-            $desk->position_x = $request->position_x;
-            $desk->position_y = $request->position_y;
-            $desk->save();
+        $deskId = $request->id;
+        $positionX = $request->position_x;
+        $positionY = $request->position_y;
+        $width = $request->width;
+        $height = $request->height;
 
-            return response()->json(['success' => 'Desk position updated successfully.']);
+        // Find the desk and update its position, width, and height
+        $desk = Desk::findOrFail($deskId);
+        $desk->position_x = $positionX;
+        $desk->position_y = $positionY;
+        $desk->width = $width;
+        $desk->height = $height;
+        $desk->save();
+
+        return response()->json(['success' => 'Desk position and size updated successfully.']);
     }
+
+
+    public function updateSize(Request $request)
+    {
+        $desk = Desk::findOrFail($request->id);
+        $desk->width = $request->width;
+        $desk->height = $request->height;
+        $desk->save();
+
+        return response()->json(['success' => 'Desk size updated successfully.']);
+    }
+
 }

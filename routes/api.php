@@ -33,5 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/desks/{id}', [DeskController::class, 'update'])->name('desks.update');
     Route::delete('/desks/{id}', [DeskController::class, 'destroy'])->name('desks.destroy');
     Route::get('/desks/search', [DeskController::class, 'search'])->name('desks.search');
+    Route::post('/desks/updateSize', [DeskController::class, 'updateSize'])->name('desks.updateSize');
 });
 
