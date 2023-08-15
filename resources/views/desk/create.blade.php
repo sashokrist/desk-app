@@ -88,7 +88,12 @@
                             <div class="symbol">{{ $desk->symbol }}</div>
                             <div class="name">{{ $desk->name }}</div>
                             <div class="modal-header">
-                                <a href="{{ route('desks.edit', $desk->id) }}" class="btn btn-primary">Edit</a>
+                                <a href="#" class="btn btn-primary"
+                                   data-desk-id="{{ $desk->id }}"
+                                   data-name="{{ $desk->name }}" data-symbol="{{ $desk->symbol }}"
+                                   data-category-id="{{ $desk->category->id }}"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#editModal">Edit</a>
 
                                 <form action="{{ route('desks.destroy', $desk->id) }}" method="post">
                                     @csrf
@@ -144,23 +149,53 @@
                     </div>
                 </div>
             </div>
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal" data-desk-id="{{ $desk->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Desk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div id="map"></div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="alert alert-danger print-error-msg" style="display:none">
+                                    <ul></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="mb-6 ">
+                                        <label class="form-label">Select Category</label>
+                                        <select id="category_id" name="category_id" class="form-control">
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editName" class="form-label">Name:</label>
+                                    <input type="text" id="editName" name="editName" class="form-control" placeholder="Name"
+                                           required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editSymbol" class="form-label">Symbol:</label>
+                                    <input type="text" id="editSymbol" name="editSymbol" class="form-control">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-success btn-update">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 </body>
-<script>
-    $(document).ready(function () {
-        $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var editName = button.data('editName');
-            var editSymbol = button.data('editSymbol');
-
-            var modal = $(this);
-            modal.find('#editName').val(editName);
-            modal.find('#editSymbol').val(editSymbol);
-        });
-    });
-</script>
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -198,28 +233,43 @@
         });
     }
 
-        // Handle the update action
-        $('.btn-update').click(function () {
-            var editId = $('#editId').val();
-            var name = $('#editName').val();
-            var symbol = $('#editSymbol').val();
+    $(document).ready(function () {
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var deskId = button.data('desk-id');
+            var editName = button.data('name');
+            var editSymbol = button.data('symbol');
+            var category_id = button.data('category-id');
 
+            var modal = $(this);
+            modal.find('#deskId').val(deskId);
+            modal.find('#editName').val(editName);
+            modal.find('#editSymbol').val(editSymbol);
+            modal.find('#category_id').val(category_id);
+        });
+    });
+
+        // Handle the update action
+        $(".btn-update").click(function (e) {
+            e.preventDefault();
+            var name = $("#editName").val();
+            var symbol = $("#editSymbol").val();
+            var category_id = $("#category_id").val();
+            var desk_id = $("#editModal").data('desk-id');
+            console.log(desk_id);
             $.ajax({
-                type: 'PUT', // Use the HTTP method for update
-                url: "{{ route('desks.update', '') }}" + '/' + editId, // Update the route
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    name: name,
-                    symbol: symbol
-                },
+                type: 'PUT',
+                url: "{{ route('desks.update', '') }}" + '/' + desk_id,
+                data: {name: name, symbol: symbol, category_id: category_id, desk_id: desk_id},
                 success: function (data) {
-                    location.reload(); // Refresh the page after successful update
-                },
-                error: function (error) {
-                    printErrorMsg(data.error);
+                    if ($.isEmptyObject(data.error)) {
+                        location.reload();
+                    } else {
+                        printErrorMsg(data.error);
+                    }
                 }
             });
-    });
+        });
     // Handle search button click
     $("#searchButton").click(function (e) {
         e.preventDefault();
@@ -371,7 +421,7 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function (data) {
-
+                    location.reload();
                 },
                 error: function (error) {
                     printErrorMsg(data.error);

@@ -51,11 +51,11 @@ class DeskController extends Controller
         return response()->json(['success' => 'Desk created successfully.']);
     }
 
-    public function edit(Desk $desk)
-    {
-        $categories = Category::all();
-        return view('desk.edit', compact('desk', 'categories'));
-    }
+//    public function edit(Desk $desk)
+//    {
+//        $categories = Category::all();
+//        return view('desk.edit', compact('desk', 'categories'));
+//    }
 
     /**
      * Update the position of the desk
