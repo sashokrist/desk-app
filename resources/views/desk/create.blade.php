@@ -150,7 +150,11 @@
                 </div>
             </div>
             <!-- Edit Modal -->
-            <div class="modal fade" id="editModal" data-desk-id="{{ $desk->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="editModal"
+                 @if ($desks->count() > 0)
+                     data-desk-id="{{ $desk->id }}"
+                 @endif
+                 tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
